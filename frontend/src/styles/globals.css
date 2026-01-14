@@ -1,0 +1,9 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Global defaults (plain CSS, not @apply) */
+body {
+  background-color: #f9fafb; /* gray-50 */
+  color: #111827;           /* gray-900 */
+}
