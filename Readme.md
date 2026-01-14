@@ -1,1 +1,1 @@
-This is pointless and a waste of time
+This is pointless and a waste of time, this time via the terminal
