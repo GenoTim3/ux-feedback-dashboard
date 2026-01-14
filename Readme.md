@@ -1,1 +1,1 @@
-baba booey, I was here before the ball dropped
+This is pointless and a waste of time
