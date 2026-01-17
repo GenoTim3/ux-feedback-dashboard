@@ -1,34 +1,11 @@
+import { useEffect, useState } from "react"
 import Stars from "../components/ui/Stars"
-
-const mockFeedback = [
-  {
-    id: 1,
-    rating: 5,
-    comment: "Amazing experience!",
-    createdAt: "2026-01-14",
-  },
-  {
-    id: 2,
-    rating: 4,
-    comment: "Very good, but could be faster.",
-    createdAt: "2026-01-13",
-  },
-  {
-    id: 3,
-    rating: 2,
-    comment: "Confusing UI.",
-    createdAt: "2026-01-12",
-  },
-]
-
-// Metrics calculations
-const total = mockFeedback.length
-
-const avgRating =
-  mockFeedback.reduce((sum, f) => sum + f.rating, 0) / total
-
-const positivePct =
-  (mockFeedback.filter((f) => f.rating >= 4).length / total) * 100
+import { getFeedback, type Feedback } from "../services/api"
+import {
+  getTotalFeedback,
+  getAverageRating,
+  getPositiveFeedbackPercentage,
+} from "../utils/feedbackstats"
 
 function ratingBadge(rating: number) {
   if (rating >= 4) return "bg-green-100 text-green-800"
@@ -37,6 +14,33 @@ function ratingBadge(rating: number) {
 }
 
 export default function Admin() {
+  const [feedback, setFeedback] = useState<Feedback[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState("")
+
+  useEffect(() => {
+    async function loadFeedback() {
+      try {
+        const data = await getFeedback()
+        setFeedback(data)
+      } catch {
+        setError("Failed to load feedback")
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    loadFeedback()
+  }, [])
+
+  // ✅ Metrics are calculated *inside* the component function
+  const total = getTotalFeedback(feedback)
+  const avgRating = getAverageRating(feedback)
+  const positivePct = getPositiveFeedbackPercentage(feedback)
+
+  if (loading) return <p className="p-6">Loading feedback...</p>
+  if (error) return <p className="p-6 text-red-600">{error}</p>
+
   return (
     <main className="min-h-screen p-8 bg-gray-50">
       <h1 className="text-2xl font-bold mb-6">Admin Dashboard</h1>
@@ -45,9 +49,7 @@ export default function Admin() {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-8">
         <div className="bg-white p-6 rounded-lg shadow">
           <p className="text-sm text-gray-500">Average Rating</p>
-          <p className="text-3xl font-bold mt-2">
-            {avgRating.toFixed(1)} ⭐
-          </p>
+          <p className="text-3xl font-bold mt-2">{avgRating.toFixed(1)} ⭐</p>
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow">
@@ -57,9 +59,7 @@ export default function Admin() {
 
         <div className="bg-white p-6 rounded-lg shadow">
           <p className="text-sm text-gray-500">Positive Feedback</p>
-          <p className="text-3xl font-bold mt-2">
-            {positivePct.toFixed(0)}%
-          </p>
+          <p className="text-3xl font-bold mt-2">{positivePct.toFixed(0)}%</p>
         </div>
       </div>
 
@@ -75,7 +75,7 @@ export default function Admin() {
           </thead>
 
           <tbody>
-            {mockFeedback.length === 0 ? (
+            {feedback.length === 0 ? (
               <tr>
                 <td
                   colSpan={3}
@@ -85,7 +85,7 @@ export default function Admin() {
                 </td>
               </tr>
             ) : (
-              mockFeedback.map((item) => (
+              feedback.map((item) => (
                 <tr
                   key={item.id}
                   className="border-t hover:bg-gray-50 transition"
@@ -102,11 +102,11 @@ export default function Admin() {
                   </td>
 
                   <td className="px-4 py-3 max-w-md text-gray-700">
-                    {item.comment}
+                    {item.message}
                   </td>
 
                   <td className="px-4 py-3 text-gray-500">
-                    {item.createdAt}
+                    {new Date(item.createdAt).toLocaleString()}
                   </td>
                 </tr>
               ))

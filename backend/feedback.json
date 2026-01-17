@@ -1,0 +1,26 @@
+[
+  {
+    "id": 1768677690138,
+    "message": "hello from curl",
+    "page": "test",
+    "createdAt": "2026-01-17T19:21:30.138Z"
+  },
+  {
+    "id": 1768678622444,
+    "message": "This is a cool app!",
+    "page": "home",
+    "createdAt": "2026-01-17T19:37:02.444Z"
+  },
+  {
+    "id": 1768678986898,
+    "message": "Baba booey",
+    "page": "home",
+    "createdAt": "2026-01-17T19:43:06.898Z"
+  },
+  {
+    "id": 1768679409876,
+    "message": "Go fuck yourself",
+    "page": "home",
+    "createdAt": "2026-01-17T19:50:09.876Z"
+  }
+]

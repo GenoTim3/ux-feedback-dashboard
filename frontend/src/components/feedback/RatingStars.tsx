@@ -1,23 +1,25 @@
-interface Props {
-  rating: number
-  setRating: (r: number) => void
-}
+import { type Dispatch, type SetStateAction } from "react";
 
-export default function RatingStars({ rating, setRating }: Props) {
+type Props = {
+  rating: number;
+  onChange: Dispatch<SetStateAction<number>>;
+};
+
+export default function RatingStars({ rating, onChange }: Props) {
   return (
-    <div className="flex gap-2">
+    <div className="flex justify-center space-x-1 mt-4">
       {[1, 2, 3, 4, 5].map((star) => (
         <button
           key={star}
           type="button"
-          onClick={() => setRating(star)}
-          className={`text-2xl ${
+          className={`text-3xl ${
             star <= rating ? "text-yellow-400" : "text-gray-300"
           }`}
+          onClick={() => onChange(star)}
         >
           ★
         </button>
       ))}
     </div>
-  )
+  );
 }
