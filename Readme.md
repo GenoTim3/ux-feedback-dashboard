@@ -10,6 +10,8 @@ This project simulates a real-world SaaS feedback system using:
 
 The architecture mirrors what you’d deploy to AWS later (API Gateway + Lambda + DynamoDB), but runs 100% locally.
 
+Remember to use 3 terminals to congrol Front, End, and CURl results
+
 ---
 
 ## ✨ Features
