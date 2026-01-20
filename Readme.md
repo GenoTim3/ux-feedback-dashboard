@@ -12,6 +12,8 @@ The architecture mirrors what you’d deploy to AWS later (API Gateway + Lambda 
 
 Remember to use 3 terminals to congrol Front, End, and CURl results
 
+First project of this type to come from me 
+
 ---
 
 ## ✨ Features
